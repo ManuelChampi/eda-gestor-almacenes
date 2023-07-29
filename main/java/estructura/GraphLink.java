@@ -1,6 +1,6 @@
 package estructura;
-
-public class GraphLink <E>{
+import java.util.Iterator;
+public class GraphLink <E> implements Iterable<Vertex<E>>{
 	protected ListLinked<Vertex<E>> listVertex;
 	public GraphLink() {
 		this.listVertex = new ListLinked<Vertex<E>>();
@@ -34,6 +34,18 @@ public class GraphLink <E>{
 	public String toString() {
 		return this.listVertex.toString();
 	}
+	public ListLinked<Vertex<E>> getListVertex() {
+        return listVertex;
+    }
+	public Iterator<Vertex<E>> iterator() {
+        return listVertex.iterator();
+    }
+	public void removeVertex(Vertex<E> vertexToRemove) {
+        listVertex.remove(vertexToRemove);
+    
+    }
+	
+	
 	
 	/*public void removeEdge(E dataOri, E dataDes) {
 	
