@@ -1,5 +1,7 @@
 package estructura;
 
+import java.util.List;
+
 public class Vertex <E>{
 	protected E data;
 	protected ListLinked<Edge<E>> listAdj;  
@@ -28,5 +30,8 @@ public class Vertex <E>{
 
     public void setData(E data) {
         this.data = data;
+    }
+	public ListLinked<Edge<E>> getListAdj() {
+        return listAdj;
     }	
 }
