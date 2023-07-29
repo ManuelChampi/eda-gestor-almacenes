@@ -1,6 +1,7 @@
 package estructura;
-
-public class ListLinked <E> {
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+public class ListLinked <E> implements Iterable<E>{
 	Node<E> first; 
 	
 	public ListLinked() {
@@ -69,4 +70,32 @@ public class ListLinked <E> {
 		}
 		return str;
 	}
+	public Iterator<E> iterator() {
+        return new ListLinkedIterator();
+    }
+
+    // Clase interna para el iterador de ListLinked
+    private class ListLinkedIterator implements Iterator<E> {
+        private Node<E> current;
+
+        public ListLinkedIterator() {
+            this.current = first;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return current != null;
+        }
+
+        @Override
+        public E next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+            E data = current.getData();
+            current = current.getNext();
+            return data;
+        }
+    }
+
 }

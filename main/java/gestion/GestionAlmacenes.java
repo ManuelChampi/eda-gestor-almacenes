@@ -1,36 +1,91 @@
 package gestion;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.List;
+
+import estructura.Edge;
 import estructura.GraphLink;
+import estructura.Vertex;
 import models.Almacen;
 import models.Producto;
 
-public class GestionAlmacenes {
-    private GraphLink<Almacen> almacenesGraph;
+public class GestionAlmacenes  {
+    private GraphLink<Almacen> grafo;
 
     public GestionAlmacenes() {
-        this.almacenesGraph = new GraphLink<>();
+        this.grafo = new GraphLink<>();
     }
 
     // metodo para agregar un almacen nuevo
     public void addAlmacen(int codigo, String nombre, String direccion) {
         // implementacion para agregar un almacen al grafo
+        Almacen nuevoAlmacen = new Almacen(codigo, nombre, direccion);
+
+        // Insertar el nuevo almacén en el grafo
+        grafo.insertVertex(nuevoAlmacen);
+
+        // Mostrar mensaje de éxito (esto es opcional, solo para indicar que se agregó correctamente)
+        System.out.println("Se ha agregado un nuevo almacén: " + nuevoAlmacen);
     }
 
     // Metodo para agregar almacenes desde un archivo
     public void addAlmacenesFromFile(String filePath) {
         // Implementacion para cargar almacenes desde un archivo y agregarlos al grafo
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                // Suponemos que cada línea del archivo contiene los datos de un almacén en formato CSV (código, nombre, dirección)
+                String[] data = line.split(",");
+
+                if (data.length == 3) {
+                    int codigo = Integer.parseInt(data[0].trim());
+                    String nombre = data[1].trim();
+                    String direccion = data[2].trim();
+
+                    // Agregar el almacén al grafo utilizando el método addAlmacen
+                    addAlmacen(codigo, nombre, direccion);
+                } else {
+                    // Si la línea no tiene el formato esperado, se ignora y se muestra un mensaje de error
+                    System.err.println("Error al leer línea del archivo: " + line);
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Error al leer el archivo: " + e.getMessage());
+        }
     }
 
     // Metodo para dar de baja un almacen
     public void removeAlmacenByCodigo(int codigo) {
-        // Implementacion para eliminar un almacen del grafo por su codigo
+        Vertex<Almacen> vertexToRemove = null;
+    for (Vertex<Almacen> vertex : grafo.getListVertex()) {
+        if (vertex.getData().getCodigo() == codigo) {
+            vertexToRemove = vertex;
+            break;
+        }
+    }
+
+    if (vertexToRemove != null) {
+        grafo.removeVertex(vertexToRemove);
+        System.out.println("Se ha eliminado el almacén con código " + codigo);
+    } else {
+        System.out.println("No se encontró ningún almacén con el código " + codigo);
+    }
+    
+    
     }
 
     // Metodo para buscar un almacen por su codigo
     public Almacen findAlmacenByCodigo(int codigo) {
         // Implementacion para buscar un almacen en el grafo por su codigo
         // Devuelve el almacen encontrado o null si no existe
+        for (Vertex<Almacen> vertex : grafo.getListVertex()) {
+            if (vertex.getData().getCodigo() == codigo) {
+                return vertex.getData();
+            }
+        }
+        return null; // Si no se encuentra ningún almacén con el código especificado
     }
 
     // Metodo para buscar un producto en todos los almacenes
