@@ -97,6 +97,11 @@ public class GestionAlmacenes  {
     // Metodo para mostrar todos los almacenes
     public void showAllAlmacenes() {
         // Implementacion para mostrar todos los almacenes del grafo
+        System.out.println("Mostrando todos los almacenes del grafo:");
+        List<Almacen> almacenes = grafo.getAlmacenes();
+        for (Almacen almacen : almacenes) {
+            System.out.println(almacen.getNombre());
+        }
     }
 
     // Metodo para agregar un producto a un almacen
